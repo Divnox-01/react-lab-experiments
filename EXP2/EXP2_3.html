@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SVG Drawing Tool</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h2 {
+        margin: 15px;
+    }
+
+    .toolbar {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 6px 12px;
+        cursor: pointer;
+        border: none;
+        background: #333;
+        color: white;
+        border-radius: 4px;
+    }
+
+    button:hover {
+        background: #555;
+    }
+
+    svg {
+        width: 90vw;
+        height: 70vh;
+        background: white;
+        border: 2px solid #ccc;
+        cursor: crosshair;
+    }
+</style>
+</head>
+
+<body>
+
+<h2>SVG Drawing Tool</h2>
+
+<div class="toolbar">
+    <input type="color" id="colorPicker" value="#000000">
+    <button onclick="undo()">Undo</button>
+</div>
+
+<svg id="canvas"></svg>
+
+<script>
+    const svg = document.getElementById("canvas");
+    const colorPicker = document.getElementById("colorPicker");
+
+    let drawing = false;
+    let currentPath = null;
+    let paths = [];
+
+    svg.addEventListener("mousedown", startDraw);
+    svg.addEventListener("mousemove", draw);
+    svg.addEventListener("mouseup", endDraw);
+    svg.addEventListener("mouseleave", endDraw);
+
+    function startDraw(e) {
+        drawing = true;
+
+        currentPath = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+        );
+
+        const x = e.offsetX;
+        const y = e.offsetY;
+
+        currentPath.setAttribute("d", `M ${x} ${y}`);
+        currentPath.setAttribute("stroke", colorPicker.value);
+        currentPath.setAttribute("stroke-width", "3");
+        currentPath.setAttribute("fill", "none");
+        currentPath.setAttribute("stroke-linecap", "round");
+
+        svg.appendChild(currentPath);
+        paths.push(currentPath);
+    }
+
+    function draw(e) {
+        if (!drawing) return;
+
+        const x = e.offsetX;
+        const y = e.offsetY;
+        const d = currentPath.getAttribute("d");
+
+        currentPath.setAttribute("d", `${d} L ${x} ${y}`);
+    }
+
+    function endDraw() {
+        drawing = false;
+        currentPath = null;
+    }
+
+    function undo() {
+        if (paths.length > 0) {
+            const lastPath = paths.pop();
+            svg.removeChild(lastPath);
+        }
+    }
+</script>
+
+</body>
+</html>

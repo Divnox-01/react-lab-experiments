@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Character Counter</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #121212;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 700px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: row;       
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        textarea {
+            flex: 2;
+            height: 160px;
+            padding: 12px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            resize: none;
+            outline: none;
+            color: #000;
+        }
+
+        textarea::placeholder {
+            color: #000;
+            opacity: 1;
+        }
+
+        .counter-box {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            height: 160px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Live Character Counter</h2>
+
+    <div class="content">
+        <textarea
+            id="textInput"
+            placeholder="Write your text here..."
+            oninput="countCharacters()">
+        </textarea>
+
+        <div class="counter-box">
+            Characters: <span id="charCount">0</span>
+        </div>
+    </div>
+</div>
+<script>
+    function countCharacters() {
+        let text = document.getElementById("textInput").value;
+        document.getElementById("charCount").innerText = text.length;
+    }
+</script>
+
+</body>
+</html>

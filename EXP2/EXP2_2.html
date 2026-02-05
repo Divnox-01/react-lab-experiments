@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dynamic Product Filter</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+    }
+
+    .container {
+        padding: 20px;
+        text-align: center;
+    }
+
+    select {
+        padding: 8px 12px;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card span {
+        font-size: 14px;
+        color: gray;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Dynamic Product Filter</h1>
+
+    <select id="sortSelect">
+        <option value="default">Sort By</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+    </select>
+
+    <div class="grid" id="productGrid"></div>
+</div>
+
+<script>
+    const products = [
+        { name: "Laptop", price: 60000, category: "Electronics" },
+        { name: "Mobile", price: 20000, category: "Electronics" },
+        { name: "Headphones", price: 2500, category: "Accessories" },
+        { name: "Shoes", price: 3500, category: "Fashion" },
+        { name: "Watch", price: 1500, category: "Fashion" }
+    ];
+
+    const grid = document.getElementById("productGrid");
+    const sortSelect = document.getElementById("sortSelect");
+
+    function displayProducts(items) {
+        grid.innerHTML = "";
+
+        items.forEach(product => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+                <h3>${product.name}</h3>
+                <p>₹${product.price}</p>
+                <span>${product.category}</span>
+            `;
+
+            grid.appendChild(card);
+        });
+    }
+
+    sortSelect.addEventListener("change", () => {
+        let sorted = [...products];
+
+        if (sortSelect.value === "low") {
+            sorted.sort((a, b) => a.price - b.price);
+        } 
+        else if (sortSelect.value === "high") {
+            sorted.sort((a, b) => b.price - a.price);
+        }
+
+        displayProducts(sorted);
+    });
+
+    // Initial Display
+    displayProducts(products);
+</script>
+
+</body>
+</html>
