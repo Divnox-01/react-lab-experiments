@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import { Person, Student, Teacher } from "./Person";
 
@@ -5,37 +6,47 @@ function App() {
 
   // Creating Objects (Polymorphism)
   const people = [
-    new Person("Rahul", 25),
-    new Student("Amit", 20, "Computer Science"),
-    new Teacher("Dr. Sharma", 45, "Mathematics")
+    new Person("John Smith", 40),
+    new Student("Alice Johnson", 20, "Computer Science"),
+    new Teacher("Dr. James Wilson", 45, "Mathematics")
   ];
 
   return (
     <div className="container">
-
       <h1>Person Class Hierarchy</h1>
 
       <div className="card-container">
+        {people.map((person, index) => {
 
-        {people.map((person, index) => (
-          <div key={index} className="card">
+          let role = "Person";
+          let extra = "";
 
-            <p>{person.getDetails()}</p>
+          if (person instanceof Student) {
+            role = "Student";
+            extra = `Course: ${person.course}`;
+          }
+          else if (person instanceof Teacher) {
+            role = "Teacher";
+            extra = `Teaching: ${person.subject}`;
+          }
 
-            <p>
-              Type:{" "}
-              {person instanceof Student
-                ? "Student"
-                : person instanceof Teacher
-                ? "Teacher"
-                : "Person"}
-            </p>
+          return (
+            <div className="card" key={index}>
+              <h2>
+                {person.name} <span className="role">({role})</span>
+              </h2>
 
-          </div>
-        ))}
+              <p><b>Age:</b> {person.age}</p>
 
+              <p className="intro">
+                {person.introduce()}
+              </p>
+
+              {extra && <p><b>{extra}</b></p>}
+            </div>
+          );
+        })}
       </div>
-
     </div>
   );
 }
